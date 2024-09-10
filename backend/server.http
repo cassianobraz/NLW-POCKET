@@ -10,3 +10,11 @@ Content-Type: application/json
 
 ###
 GET {{baseUrl}}/pending-goals
+
+###
+POST {{baseUrl}}/completions
+Content-Type: application/json
+
+{
+  "goalId": "{id}"
+}

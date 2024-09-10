@@ -1,11 +1,12 @@
 import fastify from "fastify";
-import { createGoal } from "../functions/create-goal";
 import {
+  type ZodTypeProvider,
   serializerCompiler,
   validatorCompiler,
-  type ZodTypeProvider,
 } from "fastify-type-provider-zod";
 import z from "zod";
+import { createGoal } from "../functions/create-goal";
+import { createGoalCompletion } from "../functions/create-goal-completion";
 import { getWeekPendingGoals } from "../functions/getWeekPendingGoals";
 
 const app = fastify().withTypeProvider<ZodTypeProvider>();
@@ -14,9 +15,9 @@ app.setValidatorCompiler(validatorCompiler);
 app.setSerializerCompiler(serializerCompiler);
 
 app.get("/pending-goals", async () => {
-  const sql = await getWeekPendingGoals();
+  const { pendingGoals } = await getWeekPendingGoals();
 
-  return sql
+  return { pendingGoals };
 });
 
 app.post(
@@ -38,10 +39,28 @@ app.post(
   }
 );
 
+app.post(
+  "/completions",
+  {
+    schema: {
+      body: z.object({
+        goalId: z.string(),
+      }),
+    },
+  },
+  async (req) => {
+    const { goalId } = req.body;
+    
+    await createGoalCompletion({
+      goalId,
+    });
+  }
+);
+
 app
   .listen({
     port: 3333,
   })
   .then(() => {
-    console.log(`HTTP server running!`);
+    console.log("HTTP server running!");
   });
