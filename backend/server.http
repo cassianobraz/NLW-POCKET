@@ -12,6 +12,9 @@ Content-Type: application/json
 GET {{baseUrl}}/pending-goals
 
 ###
+GET {{baseUrl}}/summary
+
+###
 POST {{baseUrl}}/completions
 Content-Type: application/json
 
