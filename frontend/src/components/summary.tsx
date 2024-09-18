@@ -13,13 +13,13 @@ import { PendingGoals } from './pendingGoals';
 dayjs.locale(ptBR)
 
 export function Summary() {
-  const { data } = useQuery({
-    queryKey: [ 'summary' ],
+  const { data } =useQuery({
+    queryKey: ['summary'],
     queryFn: getSummary,
     staleTime: 1000 * 60 // 60 segundos 
   })
-
-  if (!data) {
+  
+  if(!data) {
     return null
   }
 
@@ -38,7 +38,7 @@ export function Summary() {
         </div>
         <DialogTrigger asChild>
           <Button size='sm'>
-            <Plus className='size-4' />
+            <Plus className='size-4'/>
             Cadastrar meta
           </Button>
         </DialogTrigger>
@@ -46,7 +46,7 @@ export function Summary() {
 
       <div className='flex flex-col gap-3'>
         <Progress value={data?.completed} max={data?.total}>
-          <ProgressIndicator style={{ width: `${completedPercentage}%` }} />
+          <ProgressIndicator style={{ width: `${completedPercentage}%`}} />
         </Progress>
 
         <div className='flex items-center justify-between text-xs text-zinc-400'>
@@ -63,7 +63,7 @@ export function Summary() {
       <div className='flex flex-col gap-6'>
         <h2 className='text-xl font-medium'>Sua semana</h2>
 
-        {Object.entries(data.goalsPerDay).map(([ date, goals ]) => {
+        {Object.entries(data.goalsPerDay).map(([date, goals]) => {
           const weekDay = dayjs(date).format('dddd')
           const formattedDate = dayjs(date).format('D[ de ]MMMM')
 
@@ -78,15 +78,13 @@ export function Summary() {
                   const time = dayjs(goal.completedAt).format('HH:mm')
                   return (
                     <li key={goal.id} className='flex items-center gap-2'>
-                      <CheckCircle2 className='size-4 text-pink-500' />
+                      <CheckCircle2 className='size-4 text-pink-500'/>
                       <span className='text-sm text-zinc-400'>Você completou <span className='text-zinc-100'>{goal.title}</span> as <span className='text-zinc-100'>{time}</span></span>
                     </li>
-                  )
-                })}
+                )})}
               </ul>
             </div>
-          )
-        })}
+          )})}
       </div>
 
     </div>
